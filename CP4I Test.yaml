@@ -1,0 +1,61 @@
+$integration: 'http://ibm.com/appconnect/integration/v2/integrationFile'
+integration:
+  type: api
+  trigger-interfaces:
+    trigger-interface-1:
+      triggers:
+        retrieveTestmsg:
+          assembly:
+            $ref: '#/integration/assemblies/assembly-1'
+          input-context:
+            data: testmsg
+          output-context:
+            data: testmsg
+      options:
+        resources:
+          - business-object: testmsg
+            model:
+              $ref: '#/models/testmsg'
+            triggers:
+              retrieve: retrieveTestmsg
+      type: api-trigger
+  action-interfaces: {}
+  assemblies:
+    assembly-1:
+      assembly:
+        execute:
+          - response:
+              name: response-1
+              reply-maps:
+                - title: testmsg successfully retrieved
+                  status-code: '200'
+                  map:
+                    $map: 'http://ibm.com/appconnect/map/v1'
+                    input:
+                      - variable: api
+                        $ref: '#/trigger/api/parameters'
+                    mappings:
+                      - msgData:
+                          template: Hello from IBM App Connect
+                      - msgid:
+                          template: '{{$api.msgid}}'
+                  input:
+                    - variable: api
+                      $ref: '#/trigger/api/parameters'
+  name: CP4I Test
+models:
+  testmsg:
+    name: testmsg
+    properties:
+      msgid:
+        required: false
+        id: true
+        type: string
+      msgData:
+        required: false
+        id: false
+        type: string
+    plural: testmsg
+    description: ' '
+    operations:
+      retrieve: '#/integration/assemblies/assembly-1'
