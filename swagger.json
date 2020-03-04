@@ -1,33 +1,51 @@
 {
   "swagger" : "2.0",
   "info" : {
-    "title" : "cp4i",
+    "title" : "cp4ies",
     "version" : "1.0.0",
-    "description" : "cp4i"
+    "description" : "cp4ies"
   },
   "paths" : {
-    "/welcome" : {
-      "get" : {
-        "operationId" : "getWelcome",
+    "/esprod" : {
+      "post" : {
+        "operationId" : "postEsprod",
         "responses" : {
           "200" : {
             "description" : "The operation was successful.",
             "schema" : {
-              "$ref" : "#/definitions/verificationTest"
+              "$ref" : "#/definitions/outMsg"
             }
           }
         },
+        "consumes" : [ "application/json" ],
         "produces" : [ "application/json" ],
-        "description" : "Retrieve welcome"
+        "description" : "Insert a esprod",
+        "parameters" : [ {
+          "name" : "body",
+          "in" : "body",
+          "schema" : {
+            "$ref" : "#/definitions/inMsg"
+          },
+          "description" : "The request body for the operation",
+          "required" : true
+        } ]
       }
     }
   },
-  "basePath" : "/cp4i/v1",
+  "basePath" : "/cp4ies/v1",
   "definitions" : {
-    "verificationTest" : {
+    "inMsg" : {
       "type" : "object",
       "properties" : {
-        "greetings" : {
+        "textData" : {
+          "type" : "string"
+        }
+      }
+    },
+    "outMsg" : {
+      "type" : "object",
+      "properties" : {
+        "respData" : {
           "type" : "string"
         }
       }
